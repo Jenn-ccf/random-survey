@@ -1,18 +1,13 @@
 // window.location.href = urls.length > 0 ? urls[Math.floor(Math.random() * urls.length)] : 'https://github.com/hms5232/random-survey';
 
-let currentIndex = parseInt(localStorage.getItem('surveyIndex')) || 0; // 默認從第 0 份問卷開始
+// 從 localStorage 中讀取當前已發送的問卷索引，如果沒有則從 0 開始
+let currentIndex = parseInt(localStorage.getItem('surveyIndex')) || 0;
 
-// 檢查是否還有剩餘的問卷
-if (currentIndex < urls.length) {
-  // 根據索引發送順序的問卷
-  window.location.href = urls[currentIndex];
+// 根據當前索引發送問卷
+window.location.href = urls[currentIndex];
 
-  // 更新已發送問卷的索引
-  currentIndex++;
+// 更新已發送問卷的索引，達到四份問卷後從頭開始
+currentIndex = (currentIndex + 1) % urls.length;  // 使用取餘數操作，當索引達到 urls.length 時重置為 0
 
-  // 保存更新後的索引值
-  localStorage.setItem('surveyIndex', currentIndex);
-} else {
-  // 如果所有問卷都已經發送完，跳轉到一個完成頁面或其他頁面
-  window.location.href = 'https://github.com/hms5232/random-survey';
-}
+// 保存更新後的索引值
+localStorage.setItem('surveyIndex', currentIndex);
